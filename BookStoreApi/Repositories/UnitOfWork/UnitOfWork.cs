@@ -4,9 +4,9 @@ namespace BookStoreApi.Repositories.BaseRepository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private BookStoreAppContext _appContext;
+        private AppDbContext _appContext;
 
-        public UnitOfWork(BookStoreAppContext appContext)
+        public UnitOfWork(AppDbContext appContext)
         {
             _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         }

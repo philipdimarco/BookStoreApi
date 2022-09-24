@@ -9,9 +9,9 @@ namespace BookStoreApi.Repositories.AuthRepository
 {
     public class AuthRepository : IAuthRepository
     {
-        private BookStoreAppContext _appContext;
+        private AppDbContext _appContext;
 
-        public AuthRepository(BookStoreAppContext appContext)
+        public AuthRepository(AppDbContext appContext)
         {
             _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         }

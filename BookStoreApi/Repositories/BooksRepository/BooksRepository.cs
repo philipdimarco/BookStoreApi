@@ -9,9 +9,9 @@ namespace BookStoreApi.Repositories.BooksRepository
 {
     public class BooksRepository : IBooksRepository
     {
-        private BookStoreAppContext _booksContext;
+        private AppDbContext _booksContext;
 
-        public BooksRepository(BookStoreAppContext booksContext)
+        public BooksRepository(AppDbContext booksContext)
         {
             _booksContext = booksContext ?? throw new ArgumentNullException(nameof(_booksContext));
         }

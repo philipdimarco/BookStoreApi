@@ -18,10 +18,7 @@ namespace BookStoreApi
 
             // Add services to the container.
 
-            builder.Services.AddDbContext<BookStoreAppContext>(opt => {
-                opt.UseInMemoryDatabase("BookStoreApi");
-                opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                });
+            builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("BookStoreApi"));
             builder.Services.AddTransient<DbSeeder>();
             
             builder.Services.AddScoped<IBooksRepository, BooksRepository>();

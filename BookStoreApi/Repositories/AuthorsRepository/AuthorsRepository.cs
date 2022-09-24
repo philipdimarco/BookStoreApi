@@ -9,9 +9,9 @@ namespace BookStoreApi.Repositories.AuthorsRepository
 {
     public class AuthorsRepository : IAuthorsRepository
     {
-        private BookStoreAppContext _appContext;
+        private AppDbContext _appContext;
 
-        public AuthorsRepository(BookStoreAppContext appContext)
+        public AuthorsRepository(AppDbContext appContext)
         {
             _appContext = appContext ?? throw new ArgumentNullException(nameof(appContext));
         }

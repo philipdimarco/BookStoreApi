@@ -6,10 +6,10 @@ namespace BookStoreApi.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private BookStoreAppContext _appDbContext;
+        private AppDbContext _appDbContext;
         internal DbSet<T> _dbSet;
 
-        public BaseRepository(BookStoreAppContext appDbContext)
+        public BaseRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext ?? throw new ArgumentNullException(nameof(appDbContext));
             _dbSet = _appDbContext.Set<T>();
