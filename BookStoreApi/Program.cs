@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using BookStoreApi.Repositories.AuthorsRepository;
 using BookStoreApi.Repositories.AppUsersRepository;
 using Swashbuckle.AspNetCore.Filters;
+using BookStoreApi.Services;
 
 namespace BookStoreApi
 {

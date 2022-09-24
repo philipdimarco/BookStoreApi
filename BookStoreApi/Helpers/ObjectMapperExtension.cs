@@ -1,5 +1,6 @@
 ﻿using BookStoreApi.Entities;
 using BookStoreApi.Models;
+using BookStoreApi.Services;
 using System.Runtime.CompilerServices;
 
 namespace BookStoreApi.Helpers

@@ -1,4 +1,5 @@
 ﻿using BookStoreApi.Entities;
+using BookStoreApi.Repositories.UnitOfWork;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -6,11 +7,18 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BookStoreApi.Helpers
+namespace BookStoreApi.Services
 {
     public class AuthUtils
     {
-        public void CreatePasswordHash(String password, out byte[] passwordHash, out byte[] passwordSalt)
+        private readonly IConfiguration _configuration;
+
+        public AuthUtils(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
+
+        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
             {
@@ -19,7 +27,7 @@ namespace BookStoreApi.Helpers
             }
         }
 
-        public bool VerifyPasswordHash(String password, byte[] passwordHash, byte[] passwordSalt)
+        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512(passwordSalt))
             {
@@ -30,13 +38,11 @@ namespace BookStoreApi.Helpers
 
         public string CreateToken(User user)
         {
-            String tokenKey = "cGhpbGlwLmRpbWFyY28uY29tLm9yZy5uZXQuZ292LmNh";
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username)
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

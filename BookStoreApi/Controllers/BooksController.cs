@@ -23,7 +23,7 @@ namespace BookStoreApi.Controllers
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        [HttpGet("GetBooks"), Authorize]
+        [HttpGet("GetBooks"), Authorize]//AllowAnonymous
         public async Task<IActionResult> GetBooks()
         {
             var booksEntities = await _unitOfWork.BooksRepository.GetAllAsync();
