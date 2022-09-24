@@ -24,7 +24,7 @@ namespace BookStoreApi.Controllers
         [HttpGet(Name = "GetBooks")]
         public async Task<IActionResult> GetBooks()
         {
-            var booksEntities = await _booksRepository.GetBooksAsync();
+            var booksEntities = await _booksRepository.GetAllAsync();
             if (booksEntities == null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace BookStoreApi.Controllers
         [Route("{id}", Name = "GetBook")]
         public async Task<IActionResult> GetBook(Guid id)
         {
-            var booksEntity = await _booksRepository.GetBookAsync(id);
+            var booksEntity = await _booksRepository.GetByIdAsync(id);
             if (booksEntity == null)
             {
                 return NotFound();
