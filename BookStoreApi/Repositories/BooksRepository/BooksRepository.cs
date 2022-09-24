@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreApi.Repositories.BooksRepository
 {
-    public class AuthorsRepository : IAuthorsRepository
+    public class BooksRepository : IBooksRepository
     {
-        private Contexts.BookStoreAppContext _booksContext;
+        private BookStoreAppContext _booksContext;
 
-        public AuthorsRepository(Contexts.BookStoreAppContext booksContext)
+        public BooksRepository(BookStoreAppContext booksContext)
         {
             _booksContext = booksContext ?? throw new ArgumentNullException(nameof(_booksContext));
         }

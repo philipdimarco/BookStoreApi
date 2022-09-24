@@ -4,7 +4,7 @@ using BookStoreApi.Entities;
 
 namespace BookStoreApi.Repositories.BooksRepository
 {
-    public interface IAuthorsRepository
+    public interface IBooksRepository
     {
         Task<IEnumerable<Book>> GetBooksAsync();
         Task<Book> GetBookAsync(Guid bookId);

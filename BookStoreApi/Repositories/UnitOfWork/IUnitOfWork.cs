@@ -1,6 +1,6 @@
 ﻿namespace BookStoreApi.Repositories.BaseRepository
 {
-    public interface IBaseRepository
+    public interface IUnitOfWork
     {
         Task<bool> SaveChangesAsync();
     }

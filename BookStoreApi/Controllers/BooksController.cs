@@ -14,9 +14,9 @@ namespace BookStoreApi.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IAuthorsRepository _booksRepository;
+        private readonly IBooksRepository _booksRepository;
 
-        public BooksController(IAuthorsRepository booksContext)
+        public BooksController(IBooksRepository booksContext)
         {
             _booksRepository = booksContext ?? throw new ArgumentNullException(nameof(booksContext));
         }
