@@ -30,7 +30,7 @@ namespace BookStoreApi.Helpers
 
         public string CreateToken(User user)
         {
-            String tokenKey = "Create Token Top Secret Key";
+            String tokenKey = "cGhpbGlwLmRpbWFyY28uY29tLm9yZy5uZXQuZ292LmNh";
 
             var claims = new List<Claim>
             {

@@ -4,10 +4,7 @@ using BookStoreApi.Entities;
 
 namespace BookStoreApi.Repositories.AuthorsRepository
 {
-    public interface IAuthorsRepository
+    public interface IAuthorsRepository : IBaseRepository<Author>
     {
-        Task<IEnumerable<Author>> GetAuthorsAsync();
-        Task<Author> GetAuthorAsync(Guid authorId);
-        Task AddAuthorAsync(Author author);
     }
 }

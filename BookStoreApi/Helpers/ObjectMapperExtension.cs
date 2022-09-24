@@ -54,6 +54,7 @@ namespace BookStoreApi.Helpers
             authUtils.CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
             return new User()
             {
+                Id = Guid.NewGuid(),
                 Username = userDto.Username,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt

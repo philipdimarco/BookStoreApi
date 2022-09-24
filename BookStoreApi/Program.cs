@@ -1,11 +1,16 @@
 using BookStoreApi.Contexts;
 using BookStoreApi.Helpers;
+using BookStoreApi.Repositories.UnitOfWork;
 using BookStoreApi.Repositories.BooksRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using BookStoreApi.Repositories.AuthorsRepository;
+using BookStoreApi.Repositories.AppUsersRepository;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace BookStoreApi
 {
@@ -15,39 +20,48 @@ namespace BookStoreApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             // Add services to the container.
-
             builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("BookStoreApi"));
-            builder.Services.AddTransient<DbSeeder>();
             
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IBooksRepository, BooksRepository>();
+            builder.Services.AddScoped<IAuthorsRepository, AuthorsRepository>();
+            builder.Services.AddScoped<IAppUsersRepository, AppUsersRepository>();
             builder.Services.AddScoped<AuthUtils>();
+            builder.Services.AddTransient<DbSeeder>();
 
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
-            builder.Services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.TokenValidationParameters = new TokenValidationParameters
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey
-                        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true
-                };
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        //ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        //ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey
+                            (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = true
+                    };
+                });
+
+            builder.Services.AddSwaggerGen(opts => {
+                opts.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme (Bearer {token})",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                opts.OperationFilter<SecurityRequirementsOperationFilter>();
             });
+
 
             var app = builder.Build();
 
@@ -67,6 +81,8 @@ namespace BookStoreApi
 
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();//PhD
 
             app.UseAuthorization();
 

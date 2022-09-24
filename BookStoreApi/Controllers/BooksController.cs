@@ -1,12 +1,14 @@
 using BookStoreApi.Contexts;
 using BookStoreApi.Helpers;
 using BookStoreApi.Models;
+using BookStoreApi.Repositories.UnitOfWork;
 using BookStoreApi.Repositories.BooksRepository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookStoreApi.Controllers
 {
@@ -14,17 +16,17 @@ namespace BookStoreApi.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IBooksRepository _booksRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BooksController(IBooksRepository booksContext)
+        public BooksController(IUnitOfWork unitOfWork)
         {
-            _booksRepository = booksContext ?? throw new ArgumentNullException(nameof(booksContext));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        [HttpGet(Name = "GetBooks")]
+        [HttpGet("GetBooks"), Authorize]
         public async Task<IActionResult> GetBooks()
         {
-            var booksEntities = await _booksRepository.GetAllAsync();
+            var booksEntities = await _unitOfWork.BooksRepository.GetAllAsync();
             if (booksEntities == null)
             {
                 return NotFound();
@@ -36,7 +38,7 @@ namespace BookStoreApi.Controllers
         [Route("{id}", Name = "GetBook")]
         public async Task<IActionResult> GetBook(Guid id)
         {
-            var booksEntity = await _booksRepository.GetByIdAsync(id);
+            var booksEntity = await _unitOfWork.BooksRepository.GetByIdAsync(id);
             if (booksEntity == null)
             {
                 return NotFound();
