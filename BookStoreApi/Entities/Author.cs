@@ -12,11 +12,11 @@ namespace BookStoreApi.Entities
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(160)]
+        [MaxLength(180)]
         public string FirstName { get; set; } = String.Empty;
 
         [Required]
-        [MaxLength(160)]
+        [MaxLength(180)]
         public string LastName { get; set; } = String.Empty;
 
         public ICollection<Book> Books { get; set; } = new List<Book>();
