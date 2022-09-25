@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace BookStoreApi.Repositories
+namespace BookStoreApi.Repositories.BaseRepository
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
     {
