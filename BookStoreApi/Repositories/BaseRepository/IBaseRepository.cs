@@ -7,5 +7,7 @@ namespace BookStoreApi.Repositories.BaseRepository
         Task<T> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync();
         Task AddSingleAsync(T type);
+        void UpdateSingle(T type);
+        void RemoveSingle(T type);
     }
 }

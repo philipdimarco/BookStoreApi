@@ -33,5 +33,15 @@ namespace BookStoreApi.Repositories.BaseRepository
         {
             return await _dbSet.FindAsync(id);
         }
+
+        public void UpdateSingle(T type)
+        {
+            _dbSet.Update(type);
+        }
+
+        public void RemoveSingle(T type)
+        {
+            _dbSet.Remove(type);
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace BookStoreApi.Controllers
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        [HttpGet("GetBooks"), Authorize]//AllowAnonymous
+        [HttpGet("GetBooks"), AllowAnonymous]
         public async Task<IActionResult> GetBooks()
         {
             var booksEntities = await _unitOfWork.BooksRepository.GetAllAsync();
@@ -45,16 +45,60 @@ namespace BookStoreApi.Controllers
             }
             return Ok(booksEntity);
         }
-/*
-        [HttpPost(Name = "CreateBook")]
-        public async Task<IActionResult> CreateBook([FromBody] BookCreateDto bookDto)
+
+        [HttpGet]
+        [Route("{title}", Name = "GetBookByTitle")]
+        public async Task<IActionResult> GetBookByTitle(string title)
         {
-            var bookEntity = ObjectMapperExtension.FromCreateBookDto(bookDto);
-            await _booksRepository.AddBookAsync(bookEntity);
-            await _booksRepository.SaveChangesAsync();
+            var booksEntity = await _unitOfWork.BooksRepository.GetByTitleAsync(title);
+            if (booksEntity == null)
+            {
+                return NotFound();
+            }
+            return Ok(booksEntity);
+        }
+
+        [HttpPost("AddBook"), Authorize]
+        public async Task<IActionResult> AddBook([FromBody] BookCreateDto bookDto)
+        {
+            // Validate AuthorId GUID
+            var existingBook = _unitOfWork.BooksRepository.GetByTitleAsync(bookDto.Title);
+            if (existingBook != null && existingBook.Result.AuthorId.Equals(bookDto.AuthorId))
+            {
+                return BadRequest("This book title already exists");
+            }
+            var bookEntity = bookDto.FromCreateBookDto();
+            await _unitOfWork.BooksRepository.AddSingleAsync(bookEntity);
+            await _unitOfWork.SaveChangesAsync();
             return CreatedAtRoute("GetBook", new { id = bookEntity.Id }, bookEntity);
         }
-*/
 
+        [HttpPut("{id}"), Authorize]
+        public async Task<IActionResult> UpdateBook([FromRoute] Guid id, [FromBody] BookDto bookDto)
+        {
+            // Validate AuthorId GUID
+            var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(bookDto.Id);
+            if (targetBook == null || targetBook.Result == null)
+            {
+                return BadRequest("Cannot update a book that does not exist");
+            }
+            var updatedBookEntity = bookDto.MapFromBookDto(targetBook.Result);
+            _unitOfWork.BooksRepository.UpdateSingle(updatedBookEntity);
+            await _unitOfWork.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}"), Authorize]
+        public async Task<IActionResult> DeleteBook([FromRoute] Guid id)
+        {
+            var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(id);
+            if (targetBook == null)
+            {
+                return BadRequest("Cannot delete a book that does not exist");
+            }
+            _unitOfWork.BooksRepository.RemoveSingle(targetBook.Result);
+            await _unitOfWork.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

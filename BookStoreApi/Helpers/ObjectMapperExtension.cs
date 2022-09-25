@@ -62,6 +62,26 @@ namespace BookStoreApi.Helpers
             };
         }
 
+        public static Book MapFromBookDto(this BookDto fromBookDto, Book toBookEntity)
+        {
+            if (!String.IsNullOrEmpty(fromBookDto.Title))
+            {
+                toBookEntity.Title = fromBookDto.Title;
+            }
+            if (!String.IsNullOrEmpty(fromBookDto.Description))
+            {
+                toBookEntity.Description = fromBookDto.Description;
+            }
+            if (fromBookDto.Price > 00.00M)
+            {
+                toBookEntity.Price = fromBookDto.Price;
+            }
+            if (fromBookDto.AuthorId != Guid.Empty)
+            {
+                toBookEntity.AuthorId = fromBookDto.AuthorId;
+            }
+            return toBookEntity;
+        }
 
     }
 }
