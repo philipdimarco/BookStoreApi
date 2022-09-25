@@ -61,9 +61,8 @@ namespace BookStoreApi.Controllers
         [HttpPost("AddBook"), Authorize]
         public async Task<IActionResult> AddBook([FromBody] BookCreateDto bookDto)
         {
-            // Validate AuthorId GUID
             var existingBook = _unitOfWork.BooksRepository.GetByTitleAsync(bookDto.Title);
-            if (existingBook != null && existingBook.Result.AuthorId.Equals(bookDto.AuthorId))
+            if (existingBook.Result != null)
             {
                 return BadRequest("This book title already exists");
             }
@@ -76,7 +75,6 @@ namespace BookStoreApi.Controllers
         [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> UpdateBook([FromRoute] Guid id, [FromBody] BookDto bookDto)
         {
-            // Validate AuthorId GUID
             var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(bookDto.Id);
             if (targetBook == null || targetBook.Result == null)
             {

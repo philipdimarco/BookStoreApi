@@ -12,6 +12,7 @@ using BookStoreApi.Repositories.AuthorsRepository;
 using BookStoreApi.Repositories.AppUsersRepository;
 using Swashbuckle.AspNetCore.Filters;
 using BookStoreApi.Services;
+using FluentValidation.AspNetCore;
 
 namespace BookStoreApi
 {
@@ -35,6 +36,8 @@ namespace BookStoreApi
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddFluentValidation(config => config.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+            
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
