@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BookStoreApi.Validators
 {
-    public class AddBookRequestValidator : AbstractValidator<BookCreateDto>
+    public class AddBookValidator : AbstractValidator<BookCreateDto>
     {
-        public AddBookRequestValidator()
+        public AddBookValidator()
         {
             RuleFor(x => x.AuthorId)
                 .NotNull()

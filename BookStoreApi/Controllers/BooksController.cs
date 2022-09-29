@@ -75,8 +75,12 @@ namespace BookStoreApi.Controllers
         [HttpPut("{id}"), Authorize]
         public async Task<IActionResult> UpdateBook([FromRoute] Guid id, [FromBody] BookDto bookDto)
         {
+            if (id.Equals(Guid.Empty))
+            {
+                return BadRequest("Invalid book id");
+            }
             var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(bookDto.Id);
-            if (targetBook == null || targetBook.Result == null)
+            if (targetBook.Result == null)
             {
                 return BadRequest("Cannot update a book that does not exist");
             }
@@ -89,8 +93,12 @@ namespace BookStoreApi.Controllers
         [HttpDelete("{id}"), Authorize]
         public async Task<IActionResult> DeleteBook([FromRoute] Guid id)
         {
+            if (id.Equals(Guid.Empty))
+            {
+                return BadRequest("Invalid book id");
+            }
             var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(id);
-            if (targetBook == null)
+            if (targetBook.Result == null)
             {
                 return BadRequest("Cannot delete a book that does not exist");
             }

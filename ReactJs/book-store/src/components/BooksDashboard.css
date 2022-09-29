@@ -1,0 +1,71 @@
+.dashboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(247, 3, 23, 0.25);
+    padding: 0.2rem;
+    margin: 1rem 0;
+    border-radius: 12px;
+    background-color: #4b4b4b;
+    color: #3a3a3a;
+    font-size: 1rem;
+    flex: 1;
+    margin: 0 2rem 2rem 2rem ;
+    color: white;    
+  }
+
+  
+  .dashboard-item__title {
+    display: flex;
+    font-weight: bold;
+    color: #3a3a3a;
+    font-size: 4rem;
+    flex: 1;
+    margin: 0 2rem;
+    color: white;
+  }
+  
+  
+  .dashboard-item__description {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    align-items: flex-start;
+    flex-flow: column;
+    justify-content: flex-start;
+    flex: 1;
+  }
+  
+  .dashboard-item__desc_auth {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    padding: 0.2rem;
+  } 
+
+  .dashboard-item__price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #40005d;    
+    padding: 0.2rem;
+    border-radius: 22px;
+  }
+  
+  @media (min-width: 580px) {
+    .dashboard-item__description {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      flex: 1;
+    }
+  
+    .dashboard-item__description h2 {
+      font-size: 1.25rem;
+    }
+  
+    .dashboard-item__price {
+      font-size: 1.25rem;
+      padding: 0.5rem 1.5rem;
+    }
+  } 
