@@ -21,7 +21,7 @@ const BooksDashboard = (props) => {
     <div className="dashboard-item__desc_auth">{author}</div>
     <div className="dashboard-item__price">${price}</div>
   </div>
-  <button onClick={handleClick} >Change Title</button>
+  <button className='button_c' onClick={handleClick} >Change Title</button>
  </Card>
 }
 

@@ -1,11 +1,12 @@
 ﻿using BookStoreApi.Entities;
 using BookStoreApi.Models;
 using BookStoreApi.Services;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace BookStoreApi.Helpers
 {
-    public static class ObjectMapperExtension
+    public static class EntDtoMapper
     {
         public static BookDto FromBookEntity(this Book bookEntity)
         {
@@ -29,6 +30,14 @@ namespace BookStoreApi.Helpers
                 AuthorId = bookDto.AuthorId
             };
         }
+
+        public static IEnumerable<BookDto> FromBookEntities(this IEnumerable<Book> bookEntities)
+        {
+            //IList <BookDto> dtos = new List<BookDto>();
+            var ret = bookEntities.Select(r => r.FromBookEntity()).ToList();
+            return ret;
+        }
+
 
         public static Book FromCreateBookDto(this BookCreateDto bookDto)
         {

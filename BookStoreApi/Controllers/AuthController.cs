@@ -33,7 +33,7 @@ namespace BookStoreApi.Controllers
             {
                 return BadRequest("Invalid user registration.");
             }
-            User user = ObjectMapperExtension.FromUserDto(userDto, _authUtils);
+            User user = EntDtoMapper.FromUserDto(userDto, _authUtils);
             await _unitOfWork.AppUsersRepository.AddSingleAsync(user);
             await _unitOfWork.SaveChangesAsync();
             return Ok();

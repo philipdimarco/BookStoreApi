@@ -18,6 +18,7 @@ const BooksFilter = (props) => {
                 <option value='60.00'>$60.00</option>
                 <option value='80.00'>$80.00</option>
                 <option value='100.00'>$100.00</option>
+                <option value='200.00'>$200.00</option>
             </select>
         </div>
     </div>

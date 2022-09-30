@@ -42,18 +42,36 @@ const INITIAL_BOOKS = [
 const App = () => {
 
   const [books, setBooks] = useState(INITIAL_BOOKS);
-  const [filterBooksByPrice, setFilterBooksByPrice] = useState('20.00');
+  const [filterBooksByPrice, setFilterBooksByPrice] = useState('200.00');
 
-  const fetchBooksHandler() {
-    fetch();
+  const fetchBooksHandler = () => {
+    fetch('https://localhost:7069/api/Books/GetBooks')
+      .then(response => response.json())
+      .then(data => { 
+        const xformdBooks = data.map( svcBook => {
+          return {
+            id: svcBook.id,
+            title: svcBook.title,
+            description: svcBook.description,
+            author: svcBook.authorId,
+            price: svcBook.price
+          }
+        });
+        console.log("xformdBooks", xformdBooks);
+        setBooks(xformdBooks);
+        handleBookFilterChanged(filterBooksByPrice);
+      })
+      .catch(err => console.log("ERROR=", err));
   }
-
+  
+  
   const filteredBooks = books.filter(book => {
     //console.log(`book.price=${book.price} - filterBooksByPrice=${filterBooksByPrice}`)
     return book.price <= filterBooksByPrice;
   });
 
   const handleBookFilterChanged = priceSelected => {
+    console.log('handleBookFilterChanged', priceSelected);
     setFilterBooksByPrice(priceSelected);
   };
 
@@ -63,10 +81,11 @@ const App = () => {
       return [newBook, ...previousBooks];
     });
   };
-
+  
   return (
     <>
       <AddBook onAddBook={addBookHandler} />
+      <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button>
       <BooksFilter priceSelected={filterBooksByPrice} onBooksFilterChanged={handleBookFilterChanged}/>
       <BooksList books={filteredBooks} />
     </>
