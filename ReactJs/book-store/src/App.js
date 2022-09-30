@@ -1,44 +1,61 @@
 import React, { useState } from 'react';
 import './App.css';
-import BooksDashboard from './components/BooksDashboard';
 import AddBook from './components/AddBook';
+import BooksFilter from './components/BooksFilter';
+import BooksList from './components/BooksList';
 
+const INITIAL_BOOKS = [];
+/*
 const INITIAL_BOOKS = [
   {
     id: 'b1',
     title: 'book 1',
     description: 'book 1 desc',
     author: 'author 1',
-    price: 111.11
+    price: 19.99
   },
   {
     id: 'b2',
     title: 'book 2',
     description: 'book 2 desc',
     author: 'author 2',
-    price: 222.22
+    price: 39.99
   },
   {
     id: 'b3',
     title: 'book 3',
     description: 'book 3 desc',
     author: 'author 3',
-    price: 333.33
+    price: 59.98
   },
   {
     id: 'b4',
     title: 'book 4',
     description: 'book 4 desc',
     author: 'author 4',
-    price: 444.44 
+    price: 79.88 
   }
 ];
-
+*/
 
 
 const App = () => {
 
   const [books, setBooks] = useState(INITIAL_BOOKS);
+  const [filterBooksByPrice, setFilterBooksByPrice] = useState('20.00');
+
+  const fetchBooksHandler() {
+    fetch();
+  }
+
+  const filteredBooks = books.filter(book => {
+    //console.log(`book.price=${book.price} - filterBooksByPrice=${filterBooksByPrice}`)
+    return book.price <= filterBooksByPrice;
+  });
+
+  const handleBookFilterChanged = priceSelected => {
+    setFilterBooksByPrice(priceSelected);
+  };
 
   const addBookHandler = (newBook) => {
     console.log('App.js newBook=', newBook);
@@ -50,16 +67,8 @@ const App = () => {
   return (
     <>
       <AddBook onAddBook={addBookHandler} />
-      {
-        books.map(book => 
-        <BooksDashboard
-        key={book.id}
-        title={book.title}
-        description={book.description}
-        author={book.author}
-        price={book.price}
-        />)
-      }
+      <BooksFilter priceSelected={filterBooksByPrice} onBooksFilterChanged={handleBookFilterChanged}/>
+      <BooksList books={filteredBooks} />
     </>
   );
 }
