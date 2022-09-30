@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import AddBook from './components/AddBook';
 import BooksFilter from './components/BooksFilter';
@@ -44,24 +44,45 @@ const App = () => {
   const [books, setBooks] = useState(INITIAL_BOOKS);
   const [filterBooksByPrice, setFilterBooksByPrice] = useState('200.00');
 
-  const fetchBooksHandler = () => {
-    fetch('https://localhost:7069/api/Books/GetBooks')
-      .then(response => response.json())
-      .then(data => { 
-        const xformdBooks = data.map( svcBook => {
-          return {
-            id: svcBook.id,
-            title: svcBook.title,
-            description: svcBook.description,
-            author: svcBook.authorId,
-            price: svcBook.price
-          }
-        });
-        console.log("xformdBooks", xformdBooks);
-        setBooks(xformdBooks);
-        handleBookFilterChanged(filterBooksByPrice);
-      })
-      .catch(err => console.log("ERROR=", err));
+  useEffect( () => {
+    fetchBooksHandler();
+  }, []);
+
+  const fetchBooksHandler = async () => {
+    const response = await fetch('https://localhost:7069/api/Books/GetBooks');
+    const data = await response.json();
+    const xformdBooks = data.map( svcBook => 
+      {
+        return {
+          id: svcBook.id,
+          title: svcBook.title,
+          description: svcBook.description,
+          author: svcBook.authorId,
+          price: svcBook.price
+        };
+      });
+
+      console.log("xformdBooks", xformdBooks);
+      setBooks(xformdBooks);
+      handleBookFilterChanged(filterBooksByPrice);
+
+    // fetch('https://localhost:7069/api/Books/GetBooks')
+    //   .then(response => response.json())
+    //   .then(data => { 
+    //     const xformdBooks = data.map( svcBook => {
+    //       return {
+    //         id: svcBook.id,
+    //         title: svcBook.title,
+    //         description: svcBook.description,
+    //         author: svcBook.authorId,
+    //         price: svcBook.price
+    //       }
+    //     });
+    //     console.log("xformdBooks", xformdBooks);
+    //     setBooks(xformdBooks);
+    //     handleBookFilterChanged(filterBooksByPrice);
+    //   })
+    //   .catch(err => console.log("ERROR=", err));
   }
   
   

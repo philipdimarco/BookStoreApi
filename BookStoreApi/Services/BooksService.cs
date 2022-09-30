@@ -2,6 +2,7 @@
 using BookStoreApi.Models;
 using BookStoreApi.Repositories.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace BookStoreApi.Services
 {
@@ -53,6 +54,30 @@ namespace BookStoreApi.Services
             await _unitOfWork.BooksRepository.AddSingleAsync(bookEntity);
             await _unitOfWork.SaveChangesAsync();
             return bookEntity.FromBookEntity();
+        }
+        public async Task<BookDto> UpdateBook(Guid id, BookDto bookDto)
+        {
+            var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(bookDto.Id);
+            if (targetBook.Result == null)
+            {
+                return new BookDto();
+            }
+            var updatedBookEntity = bookDto.MapFromBookDto(targetBook.Result);
+            _unitOfWork.BooksRepository.UpdateSingle(updatedBookEntity);
+            await _unitOfWork.SaveChangesAsync();
+            return bookDto;
+        }
+        public async Task<BookDto> DeleteBook(Guid id)
+        {
+            var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(id);
+            if (targetBook.Result == null)
+            {
+                return new BookDto();
+            }
+            _unitOfWork.BooksRepository.RemoveSingle(targetBook.Result);
+            await _unitOfWork.SaveChangesAsync();
+            return targetBook.Result.FromBookEntity();
+
         }
 
     }

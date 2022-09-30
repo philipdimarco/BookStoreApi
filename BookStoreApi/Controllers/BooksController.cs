@@ -61,8 +61,7 @@ namespace BookStoreApi.Controllers
             return Ok(bookDto);
         }
 
-        //[HttpPost("AddBook"), Authorize]
-        [HttpPost("AddBook")]
+        [HttpPost("AddBook"), Authorize]
         public async Task<IActionResult> AddBook([FromBody] BookCreateDto bookCreateDto)
         {
             var bookDto = await _booksService.AddBook(bookCreateDto);
@@ -73,39 +72,35 @@ namespace BookStoreApi.Controllers
             return CreatedAtRoute("GetBook", new { id = bookDto.Id }, bookDto);
         }
 
-        //[HttpPut("{id}"), Authorize]
-        [HttpPut("{id}"), Authorize]
+        //[HttpPut("{id:Guid}"), Authorize]
+        [HttpPut("{id:Guid}")]
         public async Task<IActionResult> UpdateBook([FromRoute] Guid id, [FromBody] BookDto bookDto)
         {
             if (id.Equals(Guid.Empty))
             {
                 return BadRequest("Invalid book id");
             }
-            var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(bookDto.Id);
-            if (targetBook.Result == null)
+            var updatedBookDto = await _booksService.UpdateBook(id, bookDto);
+            if (updatedBookDto.Id.Equals(Guid.Empty))
             {
                 return BadRequest("Cannot update a book that does not exist");
             }
-            var updatedBookEntity = bookDto.MapFromBookDto(targetBook.Result);
-            _unitOfWork.BooksRepository.UpdateSingle(updatedBookEntity);
-            await _unitOfWork.SaveChangesAsync();
             return NoContent();
         }
 
-        [HttpDelete("{id}"), Authorize]
+        //[HttpDelete("{id:Guid}"), Authorize]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteBook([FromRoute] Guid id)
         {
             if (id.Equals(Guid.Empty))
             {
                 return BadRequest("Invalid book id");
             }
-            var targetBook = _unitOfWork.BooksRepository.GetByIdAsync(id);
-            if (targetBook.Result == null)
+            var deletedBookDto = await _booksService.DeleteBook(id);
+            if (deletedBookDto.Id.Equals(Guid.Empty))
             {
                 return BadRequest("Cannot delete a book that does not exist");
             }
-            _unitOfWork.BooksRepository.RemoveSingle(targetBook.Result);
-            await _unitOfWork.SaveChangesAsync();
             return NoContent();
         }
     }

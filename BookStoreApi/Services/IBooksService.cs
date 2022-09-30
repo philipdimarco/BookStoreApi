@@ -10,5 +10,7 @@ namespace BookStoreApi.Services
         Task<BookDto> GetBookById(Guid id);
         Task<BookDto> GetBookByTitle(string title);
         Task<BookDto> AddBook(BookCreateDto bookCreateDto);
+        Task<BookDto> UpdateBook(Guid id, BookDto bookDto);
+        Task<BookDto> DeleteBook(Guid id);
     }
 }
