@@ -72,8 +72,7 @@ namespace BookStoreApi.Controllers
             return CreatedAtRoute("GetBook", new { id = bookDto.Id }, bookDto);
         }
 
-        //[HttpPut("{id:Guid}"), Authorize]
-        [HttpPut("{id:Guid}")]
+        [HttpPut("{id:Guid}"), Authorize]
         public async Task<IActionResult> UpdateBook([FromRoute] Guid id, [FromBody] BookDto bookDto)
         {
             if (id.Equals(Guid.Empty))
@@ -88,8 +87,7 @@ namespace BookStoreApi.Controllers
             return NoContent();
         }
 
-        //[HttpDelete("{id:Guid}"), Authorize]
-        [HttpDelete("{id:Guid}")]
+        [HttpDelete("{id:Guid}"), Authorize]        
         public async Task<IActionResult> DeleteBook([FromRoute] Guid id)
         {
             if (id.Equals(Guid.Empty))

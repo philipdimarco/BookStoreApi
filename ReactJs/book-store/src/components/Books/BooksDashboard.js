@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import './BooksDashboard.css';
-import Card from './Card';
+import Card from '../GUI/Card';
 
 const BooksDashboard = (props) => {
   const [title , setTitle] = useState(props.title);
