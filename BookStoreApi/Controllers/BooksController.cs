@@ -26,7 +26,7 @@ namespace BookStoreApi.Controllers
             _booksService = booksService ?? throw new ArgumentNullException(nameof(booksService));
         }
 
-        [HttpGet("GetBooks"), AllowAnonymous]
+        [HttpGet("GetBooks"), Authorize]
         public async Task<IActionResult> GetBooks()
         {
             var booksDto = await _booksService.GetBooks();
@@ -37,7 +37,7 @@ namespace BookStoreApi.Controllers
             return Ok(booksDto);
         }
 
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         [Route("{id:Guid}", Name = "GetBookById")]
         public async Task<IActionResult> GetBookById(Guid id)
         {
@@ -49,7 +49,7 @@ namespace BookStoreApi.Controllers
             return Ok(bookDto);
         }
 
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         [Route("{title:alpha}", Name = "GetBookByTitle")]
         public async Task<IActionResult> GetBookByTitle(string title)
         {
