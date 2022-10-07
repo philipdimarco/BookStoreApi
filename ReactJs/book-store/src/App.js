@@ -5,7 +5,8 @@ import axios from 'axios';
 import AddBook from './components/Books/AddBook';
 import BooksFilter from './components/Books/BooksFilter';
 import BooksList from './components/Books/BooksList';
-import Register from './components/Register/Register';
+import Register from './components/Auth/Register';
+import Login from './components/Auth/Login';
 
 const INITIAL_BOOKS = [];
 const apiUrl = "https://localhost:7069/api";
@@ -93,7 +94,9 @@ const App = () => {
 
      {requestError}
      {/* <Login /> */}
-     <Register></Register>
+     <Register />
+     <br />
+     <Login />
 
       <AddBook onAddBook={addBookHandler} />
       <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button>
