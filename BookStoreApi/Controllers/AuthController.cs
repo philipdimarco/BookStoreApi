@@ -59,7 +59,7 @@ namespace BookStoreApi.Controllers
             }
 
             string token = _authUtils.CreateToken(userEntity);
-            return Ok(token);
+            return Ok(new AccessTokenDto(token));
         }
     }
 }

@@ -8,7 +8,9 @@ const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = '/Auth/signon';
 
-const Login = () => {
+
+
+const Login = (props) => {
     const userRef = useRef();
     const errRef = useRef();
 
@@ -56,15 +58,18 @@ const Login = () => {
         try {
 
             const response = await axios.post('https://localhost:7069/api/Auth/signon',
-                { Username: user, Password: pwd },
+                { userName: user, password: pwd },
                 {
                      headers: { 'Content-Type': 'application/json' },
                      withCredentials: true                    
                 }
             );
-            console.log(response?.data);
-            console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
+            console.log("response.data", response?.data);
+            console.log("response.accessToken",response?.data?.accessToken);
+            if (response?.data?.accessToken) {
+                props.setToken(response.data.accessToken);
+            }
+            console.log("response", JSON.stringify(response))
             setSuccess(true);
             //clear state and controlled inputs
             //need value attrib on inputs for this
@@ -168,7 +173,7 @@ const Login = () => {
                             Must match the first password input field.
                         </p>
 
-                        <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
+                        <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign In</button>
                     </form>
                     <p>
                         Not registered?<br />

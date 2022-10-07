@@ -10,7 +10,7 @@ import Login from './components/Auth/Login';
 
 const INITIAL_BOOKS = [];
 const apiUrl = "https://localhost:7069/api";
-const accessToken = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3RyaW5nIiwiZXhwIjoxNjY1MTA4Njg1fQ.5Him8r0U5kRU3UNGUNu9fOwYbLp9JBGWNpcbodDFcI0gaQCGLwANyl49P2ZeuhUkoKaXOJqc1-X50AvcNxY_XA';
+//const accessToken = '';
 /*
 axios.interceptors.request.use(
   config => {
@@ -23,20 +23,25 @@ axios.interceptors.request.use(
 );
 */
 
-const authAxios = axios.create({
-  baseURL: apiUrl,
-  headers: {
-    Authorization: `Bearer ${accessToken}`
-  }
-});
 
 const App = () => {
 
-
   const [books, setBooks] = useState(INITIAL_BOOKS);
-  const [requestError, setRequestError] = useState();
+  const [requestError, setRequestError] = useState('');
 
   const [filterBooksByPrice, setFilterBooksByPrice] = useState('200.00');
+
+  const [accessToken, setAccessToken] = useState('');
+
+  const authAxios = axios.create({
+    baseURL: apiUrl,
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+  
+
+
 /*
   useEffect( () => {
     fetchBooksHandler();
@@ -88,20 +93,28 @@ const App = () => {
       return [newBook, ...previousBooks];
     });
   };
+
+  let loggedOutContent = '';
   
   return (
     <>
 
      {requestError}
-     {/* <Login /> */}
-     <Register />
-     <br />
-     <Login />
-
-      <AddBook onAddBook={addBookHandler} />
-      <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button>
-      <BooksFilter priceSelected={filterBooksByPrice} onBooksFilterChanged={handleBookFilterChanged}/>
-      <BooksList books={filteredBooks} />
+      
+      { accessToken.length < 1 ? (
+        <>
+          <Register />
+          <br />
+          <Login setToken={setAccessToken}/>
+        </>
+      ) : (
+      <>
+        <AddBook onAddBook={addBookHandler} />
+        <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button>
+        <BooksFilter priceSelected={filterBooksByPrice} onBooksFilterChanged={handleBookFilterChanged}/>
+        <BooksList books={filteredBooks} />
+      </>
+      )}
     </>
   );
 }
