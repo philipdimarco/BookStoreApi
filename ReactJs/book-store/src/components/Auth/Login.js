@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from '../../api/axios'
+import { Link } from "react-router-dom";
 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -67,7 +68,8 @@ const Login = (props) => {
             console.log("response.data", response?.data);
             console.log("response.accessToken",response?.data?.accessToken);
             if (response?.data?.accessToken) {
-                props.setToken(response.data.accessToken);
+                //props.setToken(response.data.accessToken);
+                localStorage.setItem('jwt', JSON.stringify(response.data.accessToken));
             }
             console.log("response", JSON.stringify(response))
             setSuccess(true);
@@ -179,7 +181,7 @@ const Login = (props) => {
                         Not registered?<br />
                         <span className="line">
                             {/*put router link here*/}
-                            <a href="#">Register</a>
+                            <Link to="/register">Register</Link>
                         </span>
                     </p>
                 </section>

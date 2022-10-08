@@ -5,12 +5,13 @@ import axios from 'axios';
 import AddBook from './components/Books/AddBook';
 import BooksFilter from './components/Books/BooksFilter';
 import BooksList from './components/Books/BooksList';
-import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 const INITIAL_BOOKS = [];
 const apiUrl = "https://localhost:7069/api";
-//const accessToken = '';
+let accessToken = '';
 /*
 axios.interceptors.request.use(
   config => {
@@ -23,7 +24,6 @@ axios.interceptors.request.use(
 );
 */
 
-
 const App = () => {
 
   const [books, setBooks] = useState(INITIAL_BOOKS);
@@ -31,14 +31,8 @@ const App = () => {
 
   const [filterBooksByPrice, setFilterBooksByPrice] = useState('200.00');
 
-  const [accessToken, setAccessToken] = useState('');
+  // const [accessToken, setAccessToken] = useState('');
 
-  const authAxios = axios.create({
-    baseURL: apiUrl,
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-    }
-  });
   
 
 
@@ -48,11 +42,31 @@ const App = () => {
   }, []);
 */
   const fetchBooksHandler = async () => {
-
+     const rawStorage = localStorage.getItem('jwt');
+     console.log("rawStorage", rawStorage);
+     if (rawStorage)
+     {
+      const jwt = JSON.parse(rawStorage);
+      console.log("jwt", jwt);
+      accessToken = jwt;
+      // setAccessToken((prev)=>{
+      //   return jwt;
+      // });
+     }
+    console.log("accessToken", accessToken);
     try {
       /*
       const result = await axios.get(`${apiUrl}/Books/GetBooks`);
       */
+      const authAxios = axios.create({
+        baseURL: apiUrl,
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+      
+
+
       const result = await authAxios.get(`/Books/GetBooks`);
       const data = result.data;
       const xformdbooks = data.map( svcbook => 
@@ -94,28 +108,20 @@ const App = () => {
     });
   };
 
-  let loggedOutContent = '';
   
   return (
-    <>
-
-     {requestError}
-      
-      { accessToken.length < 1 ? (
-        <>
-          <Register />
-          <br />
-          <Login setToken={setAccessToken}/>
-        </>
-      ) : (
-      <>
-        <AddBook onAddBook={addBookHandler} />
-        <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button>
-        <BooksFilter priceSelected={filterBooksByPrice} onBooksFilterChanged={handleBookFilterChanged}/>
-        <BooksList books={filteredBooks} />
-      </>
-      )}
-    </>
+     <Routes>
+        <Route path="/" element={<Navigate to="/login"/>}/>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/register" element={<Register />} />
+        <Route path="/addbooks" element={<AddBook onAddBook={addBookHandler} /> } />
+        <Route path="/books" element={ <>
+          <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button>
+          <BooksFilter priceSelected={filterBooksByPrice} onBooksFilterChanged={handleBookFilterChanged}/>
+          <BooksList books={filteredBooks} />
+          </>
+        } />        
+      </Routes>
   );
 }
 
