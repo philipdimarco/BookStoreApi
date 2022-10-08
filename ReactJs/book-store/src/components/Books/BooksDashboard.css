@@ -3,11 +3,11 @@
   border: none;
   color: white;
   margin: 2rem 2rem 2rem 2rem;
-  padding: 15px 32px;
+  padding: 5px 3px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 0.6rem;
   border-radius: 1rem;
 }
 
@@ -21,7 +21,7 @@
     border-radius: 12px;
     background-color: #4b4b4b;
     color: #3a3a3a;
-    font-size: 1rem;
+    font-size: 0.2rem;
     flex: 1;
     margin: 0 2rem 2rem 2rem ;
     color: white;    
@@ -32,7 +32,7 @@
     display: flex;
     font-weight: bold;
     color: #3a3a3a;
-    font-size: 4rem;
+    font-size: 1rem;
     flex: 1;
     margin: 0 2rem;
     color: white;
@@ -42,7 +42,7 @@
   .dashboard-item__description {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 3rem;
     align-items: flex-start;
     flex-flow: column;
     justify-content: flex-start;
@@ -50,14 +50,14 @@
   }
   
   .dashboard-item__desc_auth {
-    font-size: 1.5rem;
+    font-size: 0.8rem;
     font-weight: bold;
     color: white;
     padding: 0.2rem;
   } 
 
   .dashboard-item__price {
-    font-size: 1rem;
+    font-size: 0.4rem;
     font-weight: bold;
     color: white;
     background-color: #40005d;    
@@ -74,11 +74,11 @@
     }
   
     .dashboard-item__description h2 {
-      font-size: 1.25rem;
+      font-size: 0.5rem;
     }
   
     .dashboard-item__price {
-      font-size: 1.25rem;
+      font-size: 0.8rem;
       padding: 0.5rem 1.5rem;
     }
   } 

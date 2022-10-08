@@ -33,26 +33,25 @@ const App = () => {
 
   // const [accessToken, setAccessToken] = useState('');
 
-  
 
-
-/*
   useEffect( () => {
     fetchBooksHandler();
   }, []);
-*/
+
   const fetchBooksHandler = async () => {
-     const rawStorage = localStorage.getItem('jwt');
-     console.log("rawStorage", rawStorage);
-     if (rawStorage)
-     {
-      const jwt = JSON.parse(rawStorage);
-      console.log("jwt", jwt);
-      accessToken = jwt;
+    //  const rawStorage = localStorage.getItem('jwt');
+    //  console.log("rawStorage", rawStorage);
+    //  if (rawStorage)
+    //  {
+    //   const jwt = JSON.parse(rawStorage);
+    //   console.log("jwt", jwt);
+    //   accessToken = jwt;
       // setAccessToken((prev)=>{
       //   return jwt;
       // });
-     }
+    //  }
+    accessToken = JSON.parse(localStorage.getItem('jwt'));
+    
     console.log("accessToken", accessToken);
     try {
       /*
@@ -116,7 +115,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/addbooks" element={<AddBook onAddBook={addBookHandler} /> } />
         <Route path="/books" element={ <>
-          <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button>
+          {/* <button className='btn-getbooks' onClick={fetchBooksHandler}>Fetch Books</button> */}
           <BooksFilter priceSelected={filterBooksByPrice} onBooksFilterChanged={handleBookFilterChanged}/>
           <BooksList books={filteredBooks} />
           </>

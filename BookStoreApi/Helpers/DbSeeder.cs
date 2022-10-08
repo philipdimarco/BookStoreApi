@@ -26,10 +26,10 @@ namespace BookStoreApi.Helpers
                                     new Book()
                                     {
                                         Id = Guid.Parse("863117BB-62AD-4A22-85FA-6E8A5F89D855"),
-                                        Title = "Refactoring",
-                                        Description = "Martin Fowler",
+                                        Title = "Being Ironman",
+                                        Description = "Tony Stark",
                                         Price = 29.99M,
-                                        AuthorId = Guid.Parse("97893410-5B03-4766-BA29-F6D6CB7B01A7"),
+                                        AuthorId = Guid.Parse("97893410-5B03-4766-BA29-F6D6CB123456"),
                                         Author = new Author()
                                     },
                                     new Book()
@@ -38,10 +38,18 @@ namespace BookStoreApi.Helpers
                                         Title = "Domain Specific Languages",
                                         Description = "Martin Fowler",
                                         Price = 45.29M,
+                                        AuthorId = Guid.Parse("97893410-5B03-4766-BA29-F6D6CB654321"),
+                                        Author = new Author()
+                                    },
+                                    new Book()
+                                    {
+                                        Id = Guid.Parse("F88ACBDD-0676-48D0-A16D-348888924BA6"),
+                                        Title = "Being Spiderman",
+                                        Description = "Peter Parker",
+                                        Price = 64.84M,
                                         AuthorId = Guid.Parse("97893410-5B03-4766-BA29-F6D6CB7B01A7"),
                                         Author = new Author()
-                                    }
-                    }
+                                    }                    }
 
                 };
                 _appContext.Authors.Add(author);
