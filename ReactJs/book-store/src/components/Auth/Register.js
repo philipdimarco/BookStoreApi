@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from '../../api/axios'
@@ -12,6 +12,7 @@ const REGISTER_URL = '/Auth/register';
 const Register = () => {
     const userRef = useRef();
     const errRef = useRef();
+    const navigate = useNavigate();
 
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);
@@ -72,6 +73,7 @@ const Register = () => {
             setUser('');
             setPwd('');
             setMatchPwd('');
+            navigate('/login', {replace: true});
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');

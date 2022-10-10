@@ -66,13 +66,13 @@ const Login = (props) => {
                      withCredentials: true                    
                 }
             );
-            console.log("response.data", response?.data);
-            console.log("response.accessToken",response?.data?.accessToken);
+            // console.log("response.data", response?.data);
+            // console.log("response.accessToken",response?.data?.accessToken);
             if (response?.data?.accessToken) {
                 //props.setToken(response.data.accessToken);
                 localStorage.setItem('jwt', JSON.stringify(response.data.accessToken));
             }
-            console.log("response", JSON.stringify(response))
+            //console.log("response", JSON.stringify(response))
             setSuccess(true);
             //clear state and controlled inputs
             //need value attrib on inputs for this

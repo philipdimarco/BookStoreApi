@@ -2,6 +2,14 @@ import './AddBook.css';
 import BookForm from './BookForm';
 
 const AddBook = (props) =>  {
+
+    const addBookHandler = (newBook) => {
+        console.log('App.js newBook=', newBook);
+        // PhD:
+        // setBooks( (previousBooks) => {
+        //   return [newBook, ...previousBooks];
+        // });
+      };
     
     const onHandleSaveNewBook = (newBookTarget) => {
         const newBook = {
